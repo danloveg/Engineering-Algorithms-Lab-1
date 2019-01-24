@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import random
 import numpy
 
@@ -15,7 +13,7 @@ def create_symmetric_graph(_size, sparseness):
     if _size < 2:
         raise ValueError('_size must not be less than two')
     
-    if 0 > sparseness > 100:
+    if sparseness < 0 or sparseness > 100:
         raise ValueError('Sparseness must be between 0 and 100 (inclusive)')
 
     # Create a matrix of random integers from 1 to 9
