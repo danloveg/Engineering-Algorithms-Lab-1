@@ -1,16 +1,14 @@
 import graphtools
-import splitting_algorithm as al
+import grouping_algorithm as al
 import plac
 import atexit
 import utilities as util
 
 def main(size: "Size of graph", sparseness: "Percentage of graph that is sparse"):
-    try:
-        graph = graphtools.create_symmetric_graph(util.str_to_int(size), util.str_to_int(sparseness))
-        al.split_into_groups(graph, size)
+    size_num = util.str_to_int(size)
 
-    except Exception as e:
-        print(e)
+    graph = graphtools.create_symmetric_graph(size_num, util.str_to_int(sparseness))
+    al.split_into_groups(graph, size_num)
 
 if __name__ == '__main__':
     atexit.register(util.close_app)

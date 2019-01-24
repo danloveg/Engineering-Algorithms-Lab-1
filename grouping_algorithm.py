@@ -44,5 +44,10 @@ def split_into_groups(adjacency_matrix, size):
 def calculate_cost(adjacency_matrix, node_groups):
     num_connections = 0
 
+    for i in node_groups[0]:
+        for j in node_groups[1]:
+            if adjacency_matrix[i][j] != 0:
+                num_connections += 1
+
     uneven_cost = UNEVEN_PENALTY * abs(len(node_groups[0]) - len(node_groups[1]))
     return Cost(num_connections, uneven_cost)
