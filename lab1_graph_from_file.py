@@ -10,7 +10,7 @@ def main(filename: "Path to file containing adjacency matrix"):
 
     if filepath.is_file():
         graph = graphtools.convert_text_matrix_to_graph(filepath)
-        al.split_into_groups(graph, len(graph))
+        al.split_into_groups(graph)
     else:
         print('"{}" does not exist.'.format(filename))
 
