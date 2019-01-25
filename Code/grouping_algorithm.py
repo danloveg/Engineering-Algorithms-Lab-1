@@ -1,5 +1,6 @@
 import random
 import copy
+import time
 
 UNEVEN_PENALTY = 5
 
@@ -22,13 +23,12 @@ def split_into_groups(adjacency_matrix):
 
     adjacency_matrix: A numpy N x N array representing a symmetric adjacency matrix
     """
-
     print('Using naive algorithm to split matrix into two groups with minimal connections.')
-    print('Press CTRL-D at any point to stop.\n')
+    print('Press CTRL-C at any point to stop.\n')
 
     graph_size = len(adjacency_matrix)
     # Number of tries to find a better solution without finding a better one is proportional to graph size
-    consecutive_worse_cost_max = graph_size * graph_size 
+    consecutive_worse_cost_max = graph_size * graph_size
 
     component_group_A = []
     component_group_B = []
@@ -45,6 +45,7 @@ def split_into_groups(adjacency_matrix):
     iteration = 1
     consecutive_worse_cost = 0
     better_solution_found = True
+    start_time = time.time()
     
     while consecutive_worse_cost < consecutive_worse_cost_max:
         # Swap two nodes between group A and B (except on first iteration)
@@ -74,22 +75,15 @@ def split_into_groups(adjacency_matrix):
             print("Iteration {}".format(iteration))
             print("Cost due to unevenness: {}\nNumber of connections: {}\n".format(current_cost.uneven_cost, current_cost.num_connections))
 
+        # Don't keep running if cost is zero
         if best_solution.cost.num_connections == 0:
-            return
+            break
 
         iteration += 1
 
-    print("> Finished running after {} iterations.\n".format(iteration))
-    
-    user_input = input("Do you want to print the final groups of components? (Y/N): ").strip().lower()
-    if user_input == "y":
-        best_solution.group_a.sort()
-        best_solution.group_b.sort()
-        group_a = list(map(lambda x: x + 1, best_solution.group_a))
-        group_b = list(map(lambda x: x + 1, best_solution.group_b))
-        print("Group A: {}".format(group_a))
-        print("Group B: {}\n".format(group_b))
-
+    print("> Finished running after {} iterations.".format(iteration))
+    print("> Finished in {:.5f} seconds\n".format(time.time() - start_time))
+    print_final_solution(best_solution)
 
 def calculate_cost(adjacency_matrix, node_group_A, node_group_B):
     # Get the number of connections between groups
@@ -103,3 +97,13 @@ def calculate_cost(adjacency_matrix, node_group_A, node_group_B):
     uneven_cost = UNEVEN_PENALTY * abs(len(node_group_A) - len(node_group_B))
 
     return Cost(num_connections, uneven_cost)
+
+def print_final_solution(solution: AlgorithmSolution):
+    user_input = input("Do you want to print the final groups of components? (Y/N): ").strip().lower()
+    if user_input == "y":
+        solution.group_a.sort()
+        solution.group_b.sort()
+        group_a = list(map(lambda x: x + 1, solution.group_a))
+        group_b = list(map(lambda x: x + 1, solution.group_b))
+        print("Group A: {}".format(group_a))
+        print("Group B: {}\n".format(group_b))

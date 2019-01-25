@@ -3,13 +3,14 @@ import numpy
 
 def create_symmetric_graph(_size, sparseness):
     """
-    Creates and returns a 2D numpy array of N x N size.
+    Creates and returns a symmetric 2D numpy array of N x N size.
 
     _size: Dimension N
-    sparseness: Value from 0 to 100. 0 means least sparseness (no zeros), 100 means max
-        sparseness (all zeros)
+    sparseness: Value from 0 to 100 determining the percent chance that a node has no connection
+        to another node. 100 means that a node will have a 100% chance of having no connection to
+        another node (no nodes will be connected). 0 means that a node will have a 0% chance of
+        not being connected to another node (the graph will be complete).
     """
-
     if _size < 2:
         raise ValueError('_size must not be less than two')
     
@@ -40,14 +41,15 @@ def create_symmetric_graph(_size, sparseness):
 
 def create_symmetric_half_connected_graph(_size, sparseness):
     """
-    Creates and returns a 2D numpy array of N x N size, where the nodes are split into two
-    disjoint groups.
+    Creates and returns a symmetric 2D numpy array of N x N size, where the nodes are split into
+    two disjoint groups.
 
     _size: Dimension N
-    sparseness: Value from 0 to 100. 0 means least sparseness (no zeros), 100 means max
-        sparseness (all zeros)
+    sparseness: Value from 0 to 100 determining the percent chance that a node has no connection
+        to another node. 100 means that a node will have a 100% chance of having no connection to
+        another node (no nodes will be connected). 0 means that a node will have a 0% chance of
+        not being connected to another node (the graph will be complete).
     """
-
     # Get a symmetric graph
     half_connected_graph = create_symmetric_graph(_size, sparseness)
 
@@ -67,7 +69,6 @@ def convert_text_matrix_to_graph(filepath):
 
     filepath: Path to text file
     """
-
     filelines = []
     with open(filepath, 'r') as f:
         filelines = f.readlines()

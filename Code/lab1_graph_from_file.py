@@ -1,8 +1,6 @@
 import graphtools
-import grouping_algorithm as al
+import grouping_algorithm
 import plac
-import atexit
-import utilities as util
 from pathlib import Path
 
 def main(filename: "Path to file containing adjacency matrix"):
@@ -10,10 +8,12 @@ def main(filename: "Path to file containing adjacency matrix"):
 
     if filepath.is_file():
         graph = graphtools.convert_text_matrix_to_graph(filepath)
-        al.split_into_groups(graph)
+        grouping_algorithm.split_into_groups(graph)
     else:
         print('"{}" does not exist.'.format(filename))
 
 if __name__ == '__main__':
-    atexit.register(util.close_app)
-    plac.call(main)
+    try:
+        plac.call(main)
+    except KeyboardInterrupt:
+        print('Exiting.')
